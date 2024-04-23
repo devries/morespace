@@ -1,13 +1,8 @@
 import gleam/erlang/process
-import gleam/io
 import mist
 import morespace/router
 import morespace/web.{Context}
 import wisp
-
-import nakai
-import nakai/attr
-import nakai/html
 
 pub fn main() {
   wisp.configure_logger()
@@ -20,7 +15,7 @@ pub fn main() {
   let assert Ok(_) =
     wisp.mist_handler(handler, secret_key_base)
     |> mist.new
-    |> mist.port(8000)
+    |> mist.port(8080)
     |> mist.start_http
 
   process.sleep_forever()
