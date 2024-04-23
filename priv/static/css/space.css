@@ -1,0 +1,51 @@
+@font-face {
+  font-family: "Linux Libertine Display O";
+  src: url("../fonts/LinLibertine_DR.woff") format('woff');
+  font-style: normal;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  background-color: #ffefdf;
+  color: #111133;
+  font-family: 'Linux Libertine Display O', Georgia, serif;
+  font-weight: 300;
+  display: flex;
+}
+.pane {
+  max-width: 750px;
+  margin: auto;
+  opacity: 1;
+}
+.content {
+  padding: 10px 40px;
+  text-align: center;
+  font-size: x-large;
+  opacity: 1;
+  transition: opacity 2s ease-out;
+}
+.signature {
+  padding: 10px 40px;
+  text-align: right;
+  font-size: large;
+  opacity: 1;
+  transition: opacity 2s ease-out;
+}
+.fade {
+  opacity: 0;
+}
+
+.pane.htmx-swapping {
+  opacity: 0;
+  transition: opacity 2s ease-out;
+}
+
+.content.htmx-added {
+  opacity: 0;
+}
+
+.signature.htmx-added {
+  opacity: 0;
+}
