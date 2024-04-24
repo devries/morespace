@@ -84,7 +84,7 @@ pub fn full_page() -> StringBuilder {
       attr.class("pane"),
       attr.Attr("hx-get", "/quote"),
       attr.Attr("hx-trigger", "load, every 20s"),
-      attr.Attr("hx-swap", "innertHTML swap:2s"),
+      attr.Attr("hx-swap", "innerHTML swap:2s"),
     ],
     [
       html.Head([
