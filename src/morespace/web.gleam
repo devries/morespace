@@ -1,4 +1,8 @@
+import birl
+import gleam/http
+import gleam/int
 import gleam/list
+import gleam/string
 import gleam/string_builder.{type StringBuilder}
 import nakai
 import nakai/attr
@@ -66,7 +70,7 @@ pub fn middleware(
   handle_request: fn(wisp.Request) -> wisp.Response,
 ) -> wisp.Response {
   let req = wisp.method_override(req)
-  use <- wisp.log_request(req)
+  use <- detail_log_request(req)
   use <- wisp.rescue_crashes
   use req <- wisp.handle_head(req)
   use <- wisp.serve_static(req, under: "/static", from: ctx.static_directory)
@@ -118,4 +122,35 @@ pub fn quote_html() -> StringBuilder {
     author_div,
   ])
   |> nakai.to_inline_string_builder
+}
+
+pub fn detail_log_request(
+  req: wisp.Request,
+  handler: fn() -> wisp.Response,
+) -> wisp.Response {
+  let response = handler()
+
+  let now = birl.now()
+
+  let client_ip = {
+    case list.key_find(req.headers, "fly-client-ip") {
+      Ok(ip) -> ip
+      Error(_) -> "unknown_ip"
+    }
+  }
+
+  [
+    birl.to_iso8601(now),
+    " ",
+    client_ip,
+    " ",
+    int.to_string(response.status),
+    " ",
+    string.uppercase(http.method_to_string(req.method)),
+    " ",
+    req.path,
+  ]
+  |> string.concat
+  |> wisp.log_info
+  response
 }
