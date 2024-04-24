@@ -3,14 +3,13 @@ import morespace/web.{type Context}
 import wisp.{type Request, type Response}
 
 pub fn handle_request(req: Request, ctx: Context) -> Response {
-  use _req <- web.middleware(req, ctx)
+  use req <- web.middleware(req, ctx)
 
   case wisp.path_segments(req) {
     [] -> main_page(req)
     ["quote"] -> quote_response(req)
     _ -> wisp.not_found()
   }
-  // wisp.html_response(string_builder.from_string(web.full_page()), 200)
 }
 
 fn main_page(req: Request) -> Response {
