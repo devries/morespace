@@ -1,4 +1,5 @@
 import gleam/http.{Get}
+import gleam/http/request
 import morespace/web.{type Context}
 import wisp.{type Request, type Response}
 
@@ -23,8 +24,11 @@ fn main_page(req: Request) -> Response {
 fn quote_response(req: Request) -> Response {
   use <- wisp.require_method(req, Get)
 
-  let fragment = web.quote_html()
-  wisp.ok()
-  |> wisp.set_header("cache-control", "no-cache, no-store")
-  |> wisp.html_body(fragment)
+  let resp = wisp.ok() |> wisp.set_header("cache-control", "no-cache, no-store")
+
+  case request.get_header(req, "accept") {
+    Ok(value) if value == "application/json" ->
+      wisp.json_body(resp, web.quote_json())
+    _ -> wisp.html_body(resp, web.quote_html())
+  }
 }

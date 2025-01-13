@@ -1,6 +1,7 @@
 import birl
 import gleam/http
 import gleam/int
+import gleam/json
 import gleam/list
 import gleam/string
 import gleam/string_tree.{type StringTree}
@@ -122,6 +123,15 @@ pub fn quote_html() -> StringTree {
     author_div,
   ])
   |> nakai.to_inline_string_tree
+}
+
+pub fn quote_json() -> StringTree {
+  let assert Ok(Quote(text, author)) =
+    list.shuffle(quotes)
+    |> list.first
+
+  json.object([#("text", json.string(text)), #("author", json.string(author))])
+  |> json.to_string_tree
 }
 
 pub fn detail_log_request(
