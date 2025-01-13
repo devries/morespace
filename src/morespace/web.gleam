@@ -3,7 +3,7 @@ import gleam/http
 import gleam/int
 import gleam/list
 import gleam/string
-import gleam/string_builder.{type StringBuilder}
+import gleam/string_tree.{type StringTree}
 import nakai
 import nakai/attr
 import nakai/html
@@ -78,7 +78,7 @@ pub fn middleware(
   handle_request(req)
 }
 
-pub fn full_page() -> StringBuilder {
+pub fn full_page() -> StringTree {
   html.div(
     [
       attr.class("pane"),
@@ -100,10 +100,10 @@ pub fn full_page() -> StringBuilder {
       ]),
     ],
   )
-  |> nakai.to_string_builder
+  |> nakai.to_string_tree
 }
 
-pub fn quote_html() -> StringBuilder {
+pub fn quote_html() -> StringTree {
   let assert Ok(Quote(text, author)) =
     list.shuffle(quotes)
     |> list.first
@@ -121,7 +121,7 @@ pub fn quote_html() -> StringBuilder {
     html.div([attr.class("content")], [html.Text(text)]),
     author_div,
   ])
-  |> nakai.to_inline_string_builder
+  |> nakai.to_inline_string_tree
 }
 
 pub fn detail_log_request(
